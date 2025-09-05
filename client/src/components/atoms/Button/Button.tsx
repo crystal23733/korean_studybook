@@ -1,3 +1,5 @@
+"use client";
+
 import { base, Props, variants } from "./Button.interface";
 
 /**
