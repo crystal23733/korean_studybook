@@ -1,6 +1,6 @@
 "use client";
 
-import Input from "../atoms/Input/Input";
+import Input from "../../atoms/Input/Input";
 
 /**
  * 검색창 컴포넌트
