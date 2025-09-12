@@ -1,9 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { forwardRef } from "react";
 
-export default function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+// ref 없는 기본 속성 타입(가독성용)
+type InputProps = React.ComponentPropsWithoutRef<"input">;
+// 실제 ref 타입
+type InputRef = React.ComponentRef<"input">;
+
+const Input = forwardRef<InputRef, InputProps>(function Input({ className = "", ...props }, ref) {
   return (
-    <input {...props} className={`w-full rounded-lg border px-3 py-2 ${props.className ?? ""}`} />
+    <input ref={ref} {...props} className={`w-full rounded-lg border px-3 py-2 ${className}`} />
   );
-}
+});
+
+export default Input;
