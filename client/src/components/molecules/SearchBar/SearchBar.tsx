@@ -1,42 +1,62 @@
 "use client";
 
+import { ChangeEvent, forwardRef, useId } from "react";
 import Input from "../../atoms/Input/Input";
+import ISearchBarProps from "./type/SearchBar.types";
 
 /**
- * 검색창 컴포넌트
- *
- * 텍스트 입력창과 안내 문구를 함께 표시한다.
- *
- * @component
- *
- * @param {object} props - 컴포넌트 속성
- * @param {string} props.value - 현재 입력창에 표시되는 값 (검색어)
- * @param {(v:string) => void} props.onChange - 입력값이 바뀔 때 호출되는 함수
+ * 검색 입력 컴포넌트
  *
  * @example
- * * 부모 컴포넌트에서 SearchBar 사용
- * const [searchValue, setSearchValue] = useState('');
- *
+ * ```tsx
+ * const [q, setQ] = useState('');
  * <SearchBar
- *  value = {searchValue}
- *  onChange={(newValue) => setSearchValue(newValue)}
+ *   value={q}
+ *   onChange={setQ}
+ *   placeholder="Search by email/name"
+ *   helperText="Type to filter"
  * />
+ * ```
  */
-export default function SearchBar({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (v: string) => void;
-}) {
+const SearchBar = forwardRef<HTMLInputElement, ISearchBarProps>(function SearchBar(props, ref) {
+  const {
+    value,
+    onChange,
+    label = "Search",
+    helperText,
+    className = "",
+    id,
+    placeholder,
+    ...rest
+  } = props;
+
+  const autoId = useId();
+  const inputId = id ?? `searchbar-${autoId}`;
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    onChange(e.currentTarget.value);
+  };
+
   return (
-    <div className="flex flex-wrap items-center gap-2">
-      <Input
-        value={value}
-        onChange={e => onChange(e.currentTarget.value)}
-        placeholder="Search by email/name"
-      />
-      <span className="text-xs text-neutral-500">Type to filter</span>
+    <div role="search" className={`flex flex-col gap-1 ${className}`}>
+      <label htmlFor={inputId} className="text-sm font-medium text-neutral-700">
+        {label}
+      </label>
+      <div className="flex items-center gap-2">
+        <Input
+          id={inputId}
+          value={value}
+          ref={ref}
+          onChange={handleChange}
+          placeholder={placeholder ?? "Search"}
+          aria-label={label}
+          className="w-full max-w-md"
+          {...rest}
+        />
+        {helperText && <span className="text-xs text-neutral-500">{helperText}</span>}
+      </div>
     </div>
   );
-}
+});
+
+export default SearchBar;
