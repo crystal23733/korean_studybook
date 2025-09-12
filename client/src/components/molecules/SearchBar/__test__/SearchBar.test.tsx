@@ -1,44 +1,35 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+// src/components/molecules/SearchBar/__test__/SearchBar.test.tsx
+import { render, screen, fireEvent } from "@testing-library/react";
 import SearchBar from "../SearchBar";
 
-// * input 컴포넌트 mock으로 만들기
-jest.mock("../../../atoms/Input/Input", () => {
-  return function MockInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
-    return <input {...props} data-testid="search-input" />;
-  };
-});
-
-describe("SearchBar 컴포넌트", () => {
-  it("기본 요소들이 렌더링된다", () => {
-    const mockOnChange = jest.fn();
-    render(<SearchBar value="" onChange={mockOnChange} />);
-
-    expect(screen.getByTestId("search-input")).toBeInTheDocument();
-    expect(screen.getByText("Type to filter")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Search by email/name")).toBeInTheDocument();
+describe("SearchBar Component", () => {
+  it("기본 레이블이 렌더링되는지 확인", () => {
+    render(<SearchBar value="" onChange={() => {}} />);
+    expect(screen.getByText("Search")).toBeInTheDocument();
   });
 
-  it("value prop이 Input에 전달된다", () => {
-    const mockOnChange = jest.fn();
-    render(<SearchBar value="테스트 검색어" onChange={mockOnChange} />);
-
-    const input = screen.getByTestId("search-input");
-    expect(input).toHaveValue("테스트 검색어");
+  it("커스텀 레이블이 정상적으로 표시되는지 확인", () => {
+    render(<SearchBar value="" onChange={() => {}} label="이메일 검색" />);
+    expect(screen.getByText("이메일 검색")).toBeInTheDocument();
   });
 
-  it("사용자가 입력하면 onChange가 올바른 값으로 호출된다", async () => {
-    const mockOnChange = jest.fn();
-    const user = userEvent.setup();
+  it("helperText가 있을 경우 표시되는지 확인", () => {
+    render(<SearchBar value="" onChange={() => {}} helperText="이름으로 검색 가능" />);
+    expect(screen.getByText("이름으로 검색 가능")).toBeInTheDocument();
+  });
 
-    render(<SearchBar value="" onChange={mockOnChange} />);
+  it("입력값이 변경될 때 onChange 콜백이 호출되는지 확인", () => {
+    const handleChange = jest.fn();
+    render(<SearchBar value="" onChange={handleChange} />);
 
-    const input = screen.getByTestId("search-input");
-    await user.type(input, "a");
+    const input = screen.getByRole("textbox");
+    fireEvent.change(input, { target: { value: "테스트" } });
 
-    // onChange가 호출되었는지 확인
-    expect(mockOnChange).toHaveBeenCalled();
-    // 마지막 호출에서 올바른 값이 전달되었는지 확인
-    expect(mockOnChange).toHaveBeenLastCalledWith("a");
+    expect(handleChange).toHaveBeenCalledWith("테스트");
+  });
+
+  it("placeholder가 정상적으로 적용되는지 확인", () => {
+    render(<SearchBar value="" onChange={() => {}} placeholder="검색어 입력" />);
+    expect(screen.getByPlaceholderText("검색어 입력")).toBeInTheDocument();
   });
 });
