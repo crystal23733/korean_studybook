@@ -1,7 +1,7 @@
 /**
  * 모더레이션 액션 타입
  */
-export type ModerationAction = 'approve' | 'hide' | 'remove';
+export type ModerationAction = "approve" | "hide" | "remove";
 
 /**
  * 모더레이션 큐 아이템 도메인 모델
@@ -25,7 +25,7 @@ export interface IModerationItem {
  */
 export interface IModerationQueueProps {
   items: ReadonlyArray<IModerationItem>;
-  onAction: (id:string, action:ModerationAction) => void;
+  onAction: (id: string, action: ModerationAction) => void;
   emptyText?: string;
   className?: string;
 }
