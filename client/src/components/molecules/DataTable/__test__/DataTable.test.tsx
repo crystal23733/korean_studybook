@@ -18,9 +18,9 @@ const mockUsers: TestUser[] = [
 
 // 기본 컬럼 정의
 const basicColumns: IDataTableColumn<TestUser>[] = [
-  { key: "name", title: "이름" },
-  { key: "email", title: "이메일" },
-  { key: "status", title: "상태" },
+  { id: "name", title: "이름", accessor: "name" },
+  { id: "email", title: "이메일", accessor: "email" },
+  { id: "status", title: "상태", accessor: "status" },
 ];
 
 describe("DataTable 컴포넌트", () => {
@@ -49,10 +49,11 @@ describe("DataTable 컴포넌트", () => {
 
   it("커스텀 render 함수가 작동한다", () => {
     const columnsWithRender: IDataTableColumn<TestUser>[] = [
-      { key: "name", title: "이름" },
+      { id: "name", title: "이름", accessor: "name" },
       {
-        key: "status",
+        id: "status",
         title: "상태",
+        accessor: "status",
         render: row => (
           <span data-testid="status-badge">{row.status === "active" ? "활성" : "비활성"}</span>
         ),
@@ -68,9 +69,9 @@ describe("DataTable 컴포넌트", () => {
 
   it("정렬 클래스가 적용된다", () => {
     const alignedColumns: IDataTableColumn<TestUser>[] = [
-      { key: "name", title: "이름", align: "left" },
-      { key: "email", title: "이메일", align: "center" },
-      { key: "status", title: "상태", align: "right" },
+      { id: "name", title: "이름", align: "left", accessor: "name" },
+      { id: "email", title: "이메일", align: "center", accessor: "email" },
+      { id: "status", title: "상태", align: "right", accessor: "status" },
     ];
 
     render(<DataTable rows={mockUsers} columns={alignedColumns} />);
