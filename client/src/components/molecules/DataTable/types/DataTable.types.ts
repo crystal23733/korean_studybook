@@ -13,9 +13,10 @@ export const ALIGN_CLASS: Record<Align, string> = {
  * 테이블 컬럼 정의 인터페이스
  *
  * @template T - 행(row)의 타입
- * @param {T} key - 렌더링에 사용할 키
+ * @param {string} id - React Key로 사용하는 고유 식별자
  * @param {string} title - 헤더에 표시될 제목
  * @param {Align} align - 정렬 방향
+ * @param {keyof T} accessor - 셀 값으로 사용할 행의 필드 키(선택). 제공하면 해당 필드를 기본 표시값으로 사용
  * @param {React.ReactNode} render - 커스텀 셀 렌더러
  * @example
  * const columns:IDataTableColumn<User>[] = [
@@ -24,9 +25,10 @@ export const ALIGN_CLASS: Record<Align, string> = {
  * ]
  */
 export interface IDataTableColumn<T extends object> {
-  key: keyof T;
+  id: string;
   title: string;
   align?: Align;
+  accessor?: keyof T;
   render?: (row: Readonly<T>, rowIndex: number) => React.ReactNode;
   className?: string;
 }
