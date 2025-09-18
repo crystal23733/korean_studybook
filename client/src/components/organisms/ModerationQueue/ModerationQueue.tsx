@@ -33,7 +33,7 @@ export default function ModerationQueue({
             className="flex items-center justify-between rounded-lg border bg-neutral-50 p-3"
           >
             <div>
-              <div className="font-medium">{i.title}</div>
+              <div className="font-medium text-neutral-900">{i.title}</div>
               <div className="text-xs text-neutral-500">
                 by {i.author} · flags {i.flags}
               </div>

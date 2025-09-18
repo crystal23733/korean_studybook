@@ -28,7 +28,7 @@ export default function KPI({
   return (
     <div className="rounded-2xl border bg-white p-4 shadow-sm">
       <div className="text-sm text-neutral-500">{title}</div>
-      <div className="mt-1 text-2xl font-bold">{value}</div>
+      <div className="mt-1 text-2xl font-bold text-neutral-900">{value}</div>
       {note && <div className="text-xs text-neutral-500">{note}</div>}
     </div>
   );

@@ -65,16 +65,26 @@ export default function UserSearchPanel({
    */
   const columns: ReadonlyArray<IDataTableColumn<IAdminUser>> = useMemo(
     () => [
-      { key: "name", title: "User" },
-      { key: "email", title: "Email" },
       {
-        key: "status",
+        id: "user",
+        title: "User",
+        align: "left",
+        render: u => <span className="text-neutral-50 font-medium">{u.name ?? u.email}</span>,
+      },
+      {
+        id: "email",
+        title: "Email",
+        align: "left",
+        render: u => <span className="text-neutral-50">{u.email}</span>,
+      },
+      {
+        id: "status",
         title: "Status",
         align: "center",
         render: u => <Badge tone={u.status === "banned" ? "error" : "ok"}>{u.status}</Badge>,
       },
       {
-        key: "id",
+        id: "actions",
         title: "Actions",
         align: "center",
         render: u => (
