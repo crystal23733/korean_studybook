@@ -26,7 +26,9 @@ export function AdminPage({ users, sessions, moderationQueue }: IAdminPageProps)
       actions={
         <div className="flex gap-2">
           <button className="rounded-md bg-black px-3 py-1 text-white">Export</button>
-          <button className="rounded-md bg-neutral-200 px-3 py-1">Settings</button>
+          <button className="rounded-md bg-neutral-200 px-3 py-1 text-neutral-900 hover:bg-neutral-300 transition-colors">
+            Settings
+          </button>
         </div>
       }
     >
@@ -63,7 +65,9 @@ export function AdminPage({ users, sessions, moderationQueue }: IAdminPageProps)
           <section aria-label="traffic">
             <div className="rounded-2xl border bg-white p-4 shadow-sm">
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-base font-semibold">Traffic (placeholder chart)</h3>
+                <h3 className="text-base font-semibold text-neutral-900">
+                  Traffic (placeholder chart)
+                </h3>
               </div>
               <ChartPlaceholder />
             </div>
@@ -72,7 +76,7 @@ export function AdminPage({ users, sessions, moderationQueue }: IAdminPageProps)
           <section aria-label="moderation queue">
             <div className="rounded-2xl border bg-white p-4 shadow-sm">
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-base font-semibold">Moderation Queue</h3>
+                <h3 className="text-base font-semibold text-neutral-900">Moderation Queue</h3>
               </div>
               <ModerationQueue
                 items={moderationQueue}

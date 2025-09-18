@@ -27,21 +27,39 @@ export default function SessionsTable({
 }: ISessionTableProps) {
   const columns: ReadonlyArray<IDataTableColumn<ISessionRow>> = useMemo(() => {
     const base: IDataTableColumn<ISessionRow>[] = [
-      { id: "id", title: "Session", accessor: 'id' },
-      { id: "user", title: "User", accessor: 'user' },
-      { id: "start", title: "Start", align: "center", accessor: 'start' },
-      { id: "pages", title: "Pages", align: "center", accessor: 'pages' },
-      { id: "last", title: "Last Path", accessor: 'last' },
+      { id: "id", title: "Session", render: r => <span className="text-neutral-50">{r.id}</span> },
+      {
+        id: "user",
+        title: "User",
+        render: r => <span className="text-neutral-50 font-medium">{r.user}</span>,
+      },
+      {
+        id: "start",
+        title: "Start",
+        align: "center",
+        render: r => <span className="text-neutral-50">{r.start}</span>,
+      },
+      {
+        id: "pages",
+        title: "Pages",
+        align: "center",
+        render: r => <span className="text-neutral-50">{r.pages}</span>,
+      },
+      {
+        id: "last",
+        title: "Last Path",
+        render: r => <span className="text-neutral-50">{r.last}</span>,
+      },
     ];
     if (onOpen) {
       base.push({
-        id: "id",
+        id: "actions",
         title: "Actions",
         align: "center",
         render: r => (
           <button
             type="button"
-            className="rounded-md bg-neutral-900 px-2 py-1 text-sm"
+            className="rounded-md bg-neutral-900 px-2 py-1 text-sm text-white hover:bg-neutral-800 transition-colors"
             onClick={() => onOpen(r.id)}
             aria-label={`Open session ${r.id}`}
           >

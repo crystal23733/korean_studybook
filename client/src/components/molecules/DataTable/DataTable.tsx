@@ -28,20 +28,20 @@ export default function DataTable<T extends object>(props: IDataTableProps<T>) {
     <div className={`overflow-hidden rounded-xl border ${className}`}>
       <table className="w-full text-sm text-neutral-900" role="table">
         {caption && <caption className="sr-only">{caption}</caption>}
-        <thead className={`bg-neutral-50 ${stickyHeader ? "sticky top-0 z-10" : ""}`}>
+        <thead className={`bg-neutral-100 ${stickyHeader ? "sticky top-0 z-10" : ""}`}>
           <tr>
             {columns.map(c => (
               <th
                 key={c.id}
                 scope="col"
-                className={`px-3 py-2 ${ALIGN_CLASS[c.align ?? "left"]} text-neutral-900`}
+                className={`px-3 py-2 ${ALIGN_CLASS[c.align ?? "left"]} text-neutral-900 font-medium`}
               >
                 {c.title}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-neutral-900">
           {rows.length === 0 ? (
             <tr>
               <td className="px-3 py-4 text-center text-neutral-500" colSpan={columns.length}>
