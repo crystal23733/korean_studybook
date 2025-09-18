@@ -27,21 +27,21 @@ export default function SessionsTable({
 }: ISessionTableProps) {
   const columns: ReadonlyArray<IDataTableColumn<ISessionRow>> = useMemo(() => {
     const base: IDataTableColumn<ISessionRow>[] = [
-      { key: "id", title: "Session" },
-      { key: "user", title: "User" },
-      { key: "start", title: "Start", align: "center" },
-      { key: "pages", title: "Pages", align: "center" },
-      { key: "last", title: "Last Path" },
+      { id: "id", title: "Session", accessor: 'id' },
+      { id: "user", title: "User", accessor: 'user' },
+      { id: "start", title: "Start", align: "center", accessor: 'start' },
+      { id: "pages", title: "Pages", align: "center", accessor: 'pages' },
+      { id: "last", title: "Last Path", accessor: 'last' },
     ];
     if (onOpen) {
       base.push({
-        key: "id",
+        id: "id",
         title: "Actions",
         align: "center",
         render: r => (
           <button
             type="button"
-            className="rounded-md bg-neutral-200 px-2 py-1 text-sm"
+            className="rounded-md bg-neutral-900 px-2 py-1 text-sm"
             onClick={() => onOpen(r.id)}
             aria-label={`Open session ${r.id}`}
           >
