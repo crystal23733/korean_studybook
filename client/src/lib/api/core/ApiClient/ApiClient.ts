@@ -1,4 +1,4 @@
-import { ApiClientOptions, IHttpClient } from "./types/IApiClient.types";
+import { ApiClientOptions, IHttpClient, ITokenProvider } from "./types/IApiClient.types";
 
 /**
  * Fetch API를 기반으로 구현된 기본 HTTP 클라이언트
@@ -106,5 +106,55 @@ export abstract class ApiClient {
 
   protected del<T>(path: string): Promise<T> {
     return this.http.del<T>(`${this.baseUrl}${path}`);
+  }
+}
+
+/**
+ * AuthenticatedApiClient: 토큰 주입이 필요한 API를 위한 추상 클래스.
+ * - 구현체는 `tokenProvider`만 주입하면 되고, HTTP 호출 시 자동으로 `Authorization` 헤더를 추가
+ *
+ * @param options - 베이스 URL, 토큰 제공자, HTTP 구현체
+ * class AdminApi extends AuthenticatedApiClient {
+ *   constructor(p: ITokenProvider) { super({ baseUrl: '/api/admin', tokenProvider: p }); }
+ *   listUsers(){ return this.authedGet<ReadonlyArray<User>>('/users'); }
+ * }
+ */
+export interface AuthentcatedApiClientOptions extends ApiClientOptions {
+  tokenProvider: ITokenProvider;
+}
+
+export abstract class AuthenticatedApiClient extends ApiClient {
+  private readonly tokenProvider: ITokenProvider;
+
+  protected constructor(options: AuthentcatedApiClientOptions) {
+    super(options);
+    this.tokenProvider = options.tokenProvider;
+  }
+
+  protected async authedGet<T>(path: string): Promise<T> {
+    const token = await this.tokenProvider.getAccessToken();
+    const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+    return this.http.post<T>(`${this.baseUrl}${path}`, { headers });
+  }
+  protected async authedPost<T>(path: string, body?: unknown): Promise<T> {
+    const token = await this.tokenProvider.getAccessToken();
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+    return this.http.post<T>(`${this.baseUrl}${path}`, body, { headers });
+  }
+  protected async authedPut<T>(path: string, body?: unknown): Promise<T> {
+    const token = await this.tokenProvider.getAccessToken();
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+    return this.http.put<T>(`${this.baseUrl}${path}`, body, { headers });
+  }
+  protected async authedDel<T>(path: string): Promise<T> {
+    const token = await this.tokenProvider.getAccessToken();
+    const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+    return this.http.del<T>(`${this.baseUrl}${path}`, { headers });
   }
 }
