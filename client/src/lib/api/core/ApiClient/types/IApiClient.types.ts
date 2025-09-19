@@ -47,3 +47,24 @@ export interface IHttpClient {
    */
   del<T>(url: string, init?: Omit<RequestInit, "method">): Promise<T>;
 }
+
+/**
+ * 액세스 토큰을 제공하는 인터페이스
+ */
+export interface ITokenProvider {
+  /**
+   * 유효한 액세스 토큰(JWT 등)을 반환. 없으면 null
+   */
+  getAccessToken(): Promise<string | null>;
+}
+
+/**
+ * 현재 로그인 사용자 최소 프로필
+ */
+export interface ICurrentUser {
+  id: string;
+  email: string;
+  name?: string;
+  locale?: string;
+  roles: ReadonlyArray<"learner" | "admin" | "tutor">;
+}
