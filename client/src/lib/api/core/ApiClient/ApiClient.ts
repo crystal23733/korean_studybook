@@ -17,7 +17,7 @@ export class FetchHttpClient implements IHttpClient {
     const res = await fetch(url, {
       ...(init ?? {}),
       method: "GET",
-      headers: { Accept: "applicatio/json", ...(init?.headers ?? {}) },
+      headers: { Accept: "application/json", ...(init?.headers ?? {}) },
     });
     if (!res.ok) throw new Error(`GET ${url} -> ${res.status}`);
     return (await res.json()) as T;
@@ -134,7 +134,7 @@ export abstract class AuthenticatedApiClient extends ApiClient {
   protected async authedGet<T>(path: string): Promise<T> {
     const token = await this.tokenProvider.getAccessToken();
     const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
-    return this.http.post<T>(`${this.baseUrl}${path}`, { headers });
+    return this.http.get<T>(`${this.baseUrl}${path}`, { headers });
   }
   protected async authedPost<T>(path: string, body?: unknown): Promise<T> {
     const token = await this.tokenProvider.getAccessToken();
