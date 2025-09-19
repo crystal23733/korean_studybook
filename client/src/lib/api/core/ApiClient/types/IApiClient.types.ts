@@ -68,3 +68,11 @@ export interface ICurrentUser {
   locale?: string;
   roles: ReadonlyArray<"learner" | "admin" | "tutor">;
 }
+
+/** ApiClient 생성 옵션 */
+export interface ApiClientOptions {
+  /** 기본 베이스 URL (예: '/api' 또는 'https://api.example.com) */
+  baseUrl: string;
+  /** HTTP 구현체(fetch 래퍼). 미지정 시 기본 FetchHttpClient 사용*/
+  httpClient?: IHttpClient;
+}
