@@ -1,4 +1,4 @@
-import { IHttpClient } from "./types/IApiClient.types";
+import { ApiClientOptions, IHttpClient } from "./types/IApiClient.types";
 
 /**
  * Fetch API를 기반으로 구현된 기본 HTTP 클라이언트
@@ -69,5 +69,42 @@ export class FetchHttpClient implements IHttpClient {
     });
     if (!res.ok) throw new Error(`DELETE ${url} -> ${res.status}`);
     return (await res.json()) as T;
+  }
+}
+
+/**
+ * ApiClient: 베이스 URL과 HTTP 구현만 관리하는 추상 클래스.
+ * 구체 API는 이 클래스를 상속하여 경로/메서드만 표현
+ *
+ * @param options - 베이스 URL/HTTP 구현체
+ * @example
+ * class PublicApi extends ApiClient {
+ *  constructor() {super({baseUrl: '/api'});}
+ *  health() {return this.get<{ok:true}>('health');}
+ * }
+ */
+export abstract class ApiClient {
+  protected readonly baseUrl: string;
+  protected readonly http: IHttpClient;
+
+  protected constructor(options: ApiClientOptions) {
+    this.baseUrl = options.baseUrl.replace(/\/+$/, ""); // trailing slash 제거
+    this.http = options.httpClient ?? new FetchHttpClient();
+  }
+
+  protected get<T>(path: string): Promise<T> {
+    return this.http.get<T>(`${this.baseUrl}${path}`);
+  }
+
+  protected post<T>(path: string, body?: unknown): Promise<T> {
+    return this.http.post<T>(`${this.baseUrl}${path}`, body);
+  }
+
+  protected put<T>(path: string, body?: unknown): Promise<T> {
+    return this.http.put<T>(`${this.baseUrl}${path}`, body);
+  }
+
+  protected del<T>(path: string): Promise<T> {
+    return this.http.del<T>(`${this.baseUrl}${path}`);
   }
 }
